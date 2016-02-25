@@ -1,6 +1,4 @@
-raw = open("flaredata2.txt", 'r')
-raw.readline()
-data = [[line[x] for x in range(0, 25, 2)] for line in raw.readlines()]
+
 
 def firstField(val):
     if (val == "A"):
@@ -52,6 +50,11 @@ def convert(value, indx):
     else:
         return int(value)
 
-numericdata = [[convert(ele[x], x) for x in range(len(ele))] for ele in data]
+def load(filename):
+    raw = open(filename, 'r')
+    raw.readline()
+    data = [[line[x] for x in range(0, 25, 2)] for line in raw.readlines()]
+    numericdata = [[convert(ele[x], x) for x in range(len(ele))] for ele in data]
+    return numericdata
 
-print(numericdata)
+
