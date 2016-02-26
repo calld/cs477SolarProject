@@ -72,14 +72,14 @@ def addToCluster(nx, clusters, max_dist):
     if(distanceToNeighbor > max_dist):
         return True
     else:
-        #print(candidateClusters)
+        #print(candidateClusters).append(cluster)
         max(candidateClusters, key = lambda x: min(x, key = lambda y: dist(y[1:], nx[1:]))[0]).append(nx)
         return False
 
 clusters = []
 
 for nc in NonNoise(gridlist, noiseCutOff):
-    if(addToCluster(nc, clusters, 1.5)):
+    if(addToCluster(nc, clusters, 1)):
         clusters.append([nc])
         #print(clusters)
 print("number of clusters: ", end = "")
