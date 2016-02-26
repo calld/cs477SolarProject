@@ -1,4 +1,4 @@
-
+from math import sqrt
 
 def firstField(val):
     if (val == "A"):
@@ -57,4 +57,8 @@ def load(filename):
     numericdata = [[convert(ele[x], x) for x in range(len(ele))] for ele in data]
     return numericdata
 
-
+def dist(first, second):
+    SSD = 0
+    for i in range(len(first)):
+        SSD = SSD + (first[i] - second[i])**2
+    return sqrt(SSD)
