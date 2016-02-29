@@ -32,7 +32,7 @@ gridlist.sort(key = lambda el: el[0], reverse = True)
 total = len(data)
 count = 0
 previousCount = 0
-cutoff = int(0.85*total)
+cutoff = int(0.75*total)
 noiseCutOff = gridlist[0][0]
 previousCutOff = noiseCutOff
 i = 0
@@ -82,11 +82,36 @@ for nc in NonNoise(gridlist, noiseCutOff):
     if(addToCluster(nc, clusters, 1)):
         clusters.append([nc])
         #print(clusters)
+
+def dataEqauls(e, o):
+    return e[0] == o[1] and e[1] == o[2] and e[2] == o[3] and e[3] == o[4] and e[4] == o[5] and e[5] == o[6] and e[6] == o[7] and e[7] == o[8] and e[8] == o[9] and e[9] == o[10]
+
+
+Csets = [dict() for x in range(len(clusters))]
+for e in data:
+    for i in range(len(clusters)):
+        for o in clusters[i]:
+            if dataEqauls(e, o):
+                if (e[10], e[11], e[12]) in Csets[i]:
+                    Csets[i][(e[10], e[11], e[12])] = Csets[i][(e[10], e[11], e[12])] + 1
+                else:
+                    Csets[i][(e[10], e[11], e[12])] = 1
+
+
+
+
 print("number of clusters: ", end = "")
 print(len(clusters))
 
-for cluster in clusters:
+
+
+for i in range(len(clusters)):
     print("CLUSTER:")
-    for grid in cluster:
+    for grid in clusters[i]:
         print("\t", end = "")
         print(grid)
+    print("Classifiers:")
+    for d in iter(Csets[i]):
+        print("\t", end = "")
+        print(d, end = ": ")
+        print(Csets[i][d])
