@@ -1,12 +1,14 @@
 from LoadFiles import load
-import pypi
+from ID3Tree import ID3Tree
+from pprint import pprint
+
 import math
 
 
 
-d = {0: [0,1,2,3,4,5,6],
-     1: [0,1,2,3,4,5],
-     2: [0,1,2,3],
+d = {0: [1,2,3,4,5,6,7],
+     1: [1,2,3,4,5,6],
+     2: [1,2,3,4],
      3: [1,2],
      4: [1,2,3],
      5: [1,2,3],
@@ -15,17 +17,132 @@ d = {0: [0,1,2,3,4,5,6],
      8: [1,2],
      9: [1,2]}
 
+bestAttr = [9,5,8,4,7,6,3,1,2,0]
 
+bestAttrName = ["Code for class", "Code for largest spot size",
+                "Code for spot distribution", "Activity",
+                "Evolution"," Previous 24 hour flare activity code",
+                "Historically-complex","Did region become historically complex on this pass across the sun's disk ",
+                "Area", "Area of the largest spot"]
 
 def main():
     mat = load("flaredata2.txt")
-
-    InformationGain(mat,0)
+    
+    tree = recurtion_function(mat, 0)
+    
+    pprint(tree)
+    
+    ##InformationGain(mat,0)
     ##recurtion_function(matList)
 
 
 
 ## new to make sub lists based off attrubutes and then use recurtion to get the enropy
+##    python -m pdb myscript.py
+
+
+
+
+
+
+def testAllSameClass(mat):
+    c = getClass(mat[0])
+    for i in range(len(mat)):
+        if(getClass(mat[i]) != c):
+            return False
+
+    return True
+        
+def getClass(array):
+    if(array[10]  != 0 and array[11] == 0 and array[12] == 0):
+        return 1
+    elif(array[10]  == 0 and array[11] != 0 and array[12] == 0):
+        return 2
+    elif(array[10]  == 0 and array[11] == 0 and array[12] != 0):
+        return 3
+    else:
+        return 4
+    
+
+
+
+def mostComman(mat):
+    cCl = 0
+    mCl = 0
+    xCl = 0
+    noCl = 0
+    for i in range(len(mat)):
+        tempClass = getClass(mat[i])
+        if( tempClass == 1):
+            cCl = cCl + 1
+        elif(tempClass == 2):
+            mCl = mCl + 1 
+        elif(tempClass == 3):
+            xCl = xCl + 1
+        else:
+            noCl = noCl + 1
+    maxNum = max(cCl, mCl, xCl, noCl)
+    if(maxNum == cCl):
+        return "C-class"
+    elif(maxNum == mCl):
+        return "M-class"
+    elif(maxNum == xCl):
+        return "X-class"
+    else:
+        return "Nall-Class"
+    
+    
+def allSame(mat):
+    test = getClass(mat[0])
+    if(test == 1):
+        return "C-class"
+    elif(test == 2):
+        return "M-class"
+    elif(test == 3):
+        return "X-class"
+    else:
+        return "Nall-Class"
+
+def recurtion_function(mat,attr):
+        print(attr)
+        root = ID3Tree("Node",mat)
+        if(testAllSameClass(mat)):
+            root.setLable(allSame(mat))
+        elif(len(bestAttr) == 0):
+            root.setLable(mostComman(mat))
+        else:
+            
+            A = bestAttr.pop()
+            root.setLable(bestAttrName[A])
+            print("this is attr " + str(A))
+            for x in d.get(A):
+               print("this is x = " + str(x))
+               sub = makeSublist(mat,A,x)
+            
+                #if(len(sub) == 0):
+               root.addToTree(str(x),sub)
+               if(len(root.childern[x-1].sublist) == 0):
+                   root.setLable(mostComman(mat))
+               else:
+                 print("recution case")
+                 recurtion_function(sub,attr+1)
+        return root
+                   
+
+                
+                
+
+            
+
+            
+            
+        
+        
+def printSub(sub):
+    for i in range(len(sub)):
+        print(sub[i])
+    
+
 
 
 def InformationGain(mat, attr):
@@ -111,17 +228,12 @@ def countNoClass(mat):
     return count
     
 
-class ID3Tree(object):
-    def __init__(self):
-        self.left = None
-        self.right = None
-        self.data = None
+
+
+##print(clf.predict([2,2]))
+##clf.predict([2,2])
+
 main()
-
-
-
-test = Tree()
-print(test.data)
 
 
 
