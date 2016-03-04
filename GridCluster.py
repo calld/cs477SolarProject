@@ -86,7 +86,6 @@ for nc in NonNoise(gridlist, noiseCutOff):
 def dataEqauls(e, o):
     return e[0] == o[1] and e[1] == o[2] and e[2] == o[3] and e[3] == o[4] and e[4] == o[5] and e[5] == o[6] and e[6] == o[7] and e[7] == o[8] and e[8] == o[9] and e[9] == o[10]
 
-
 Csets = [dict() for x in range(len(clusters))]
 for e in data:
     for i in range(len(clusters)):
