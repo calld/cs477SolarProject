@@ -21,7 +21,7 @@ for a in range(len(gridcounts)):
                             for h in range(len(gridcounts[a][b][c][d][e][f][g])):
                                 for j in range(len(gridcounts[a][b][c][d][e][f][g][h])):
                                     for k in range(len(gridcounts[a][b][c][d][e][f][g][h][j])):
-                                        gridlist.append([gridcounts[a][b][c][d][e][f][g][h][j][k], a, b, c, d+1, e+1, f+1, g+1, h+1, j+1, k+1])
+                                        gridlist.append([gridcounts[a][b][c][d][e][f][g][h][j][k], a/6, b/5, c/3, d, e/2, f/2, g, h, j, k])
 
 # sort by count
 gridlist.sort(key = lambda el: el[0], reverse = True)
@@ -84,8 +84,8 @@ for nc in NonNoise(gridlist, noiseCutOff):
         #print(clusters)
 
 def dataEqauls(e, o):
-    return e[0] == o[1] and e[1] == o[2] and e[2] == o[3] and e[3] == o[4] and e[4] == o[5] and e[5] == o[6] and e[6] == o[7] and e[7] == o[8] and e[8] == o[9] and e[9] == o[10]
-
+    return e[0]/6 == o[1] and e[1]/5 == o[2] and e[2]/3 == o[3] and e[3]-1 == o[4] and (e[4]-1)/2 == o[5] and (e[5]-1)/2 == o[6] and e[6]-1 == o[7] and e[7]-1 == o[8] and e[8]-1 == o[9] and e[9]-1 == o[10]
+00
 Csets = [dict() for x in range(len(clusters))]
 for e in data:
     for i in range(len(clusters)):
@@ -108,7 +108,7 @@ for i in range(len(clusters)):
     print("CLUSTER:")
     for grid in clusters[i]:
         print("\t", end = "")
-        print(grid)
+        print('{:3d}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}'.format(grid[0], grid[1],grid[2], grid[3],grid[4], grid[5],grid[6], grid[7],grid[8], grid[9],grid[10]))
     print("Classifiers:")
     for d in iter(Csets[i]):
         print("\t", end = "")
