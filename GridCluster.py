@@ -60,7 +60,7 @@ def NonNoise(data, cutoff):
 
 def addToCluster(nx, clusters, max_dist):
     candidateClusters = []
-    distanceToNeighbor = 100000
+    distanceToNeighbor = max_dist + 1
     for cluster in clusters:
         closest = min(cluster, key = lambda x: dist(x[1:], nx[1:]))
         if(dist(closest[1:], nx[1:]) < distanceToNeighbor):
@@ -85,7 +85,7 @@ for nc in NonNoise(gridlist, noiseCutOff):
 
 def dataEqauls(e, o):
     return e[0]/6 == o[1] and e[1]/5 == o[2] and e[2]/3 == o[3] and e[3]-1 == o[4] and (e[4]-1)/2 == o[5] and (e[5]-1)/2 == o[6] and e[6]-1 == o[7] and e[7]-1 == o[8] and e[8]-1 == o[9] and e[9]-1 == o[10]
-00
+
 Csets = [dict() for x in range(len(clusters))]
 for e in data:
     for i in range(len(clusters)):
